@@ -3,12 +3,18 @@ from models.forms import RegistrationForm, LoginForm
 
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'ab95dd6cf1628f866d9b4e6f27b7ecce'
 
 
 @app.route("/")
-def landing_page():
+@app.route("/home")
+def home():
     return render_template("index.html")
 
+
+@app.route("/about")
+def about():
+    return render_template('about.html', title='About')
 
 @app.route("/register", methods=['GET', 'POST'])
 def register():
