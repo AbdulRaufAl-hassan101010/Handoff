@@ -1,2 +1,3 @@
 .vscode
-__pyca
+__pycache__
+venv
