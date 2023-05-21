@@ -11,12 +11,23 @@ h6 {
     font-family: 'Noto Serif', serif
 }
 
+img {
+    width: 100%;
+    height: 100%;
+}
+
+nav #profile-img {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 2px solid white;
+}
 
 #hero {
-    background: url("http://localhost:5000/static/imgs/hero.jpg") no-repeat;
+    background: url("/static/imgs/hero.jpg") no-repeat;
     background-size: cover;
     width: 100%;
-    height: calc(100vh - 68px);
+    min-height: calc(100vh - 68px);
     position: relative;
 }
 
@@ -46,4 +57,17 @@ h6 {
     font-size: 20px;
     line-height: 1.5;
     font-weight: 300;
+}
+@media (max-height: 798px) {
+    #hero .over-lay {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    #hero .over-lay .hero-content {
+        padding-top: 0;
+    }
+
+
 }
