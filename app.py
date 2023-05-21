@@ -31,10 +31,15 @@ def login():
     if form.validate_on_submit():
         if form.email.data == 'admin@blog.com' and form.password.data == 'password':
             flash('You have been logged in!', 'success')
-            return redirect(url_for('home'))
+            return redirect(url_for('dashboard_home'))
         else:
             flash('Login Unsuccessful. Please check username and password', 'danger')
     return render_template('login.html', title='Login', form=form)
+
+
+@app.route("/dashboard", methods=['GET', 'POST'])
+def dashboard_home():
+    return render_template("/dashboard/home.html")
 
 
 if __name__ == "__main__":
