@@ -4,6 +4,7 @@ from handoffmls.forms import RegistrationForm, LoginForm
 from handoffmls.models import Instituition, User
 from flask_bcrypt import Bcrypt
 
+# init bcrypt
 bcrypt = Bcrypt(app)
 
 
@@ -21,10 +22,10 @@ def about():
 def register():
     form = RegistrationForm()
     if form.validate_on_submit():
-        # hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
-        # user = User(username=form.username.data, email=form.email.data, password=hashed_password)
-        # db.session.add(user)
-        # db.session.commit()
+        hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+        instituition = Instituition(name=form.name.data, email=form.email.data, password=hashed_password)
+        db.session.add(instituition)
+        db.session.commit()
         flash('Your account has been created! You are now able to log in', 'success')
         return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
@@ -34,7 +35,8 @@ def register():
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        if form.email.data == 'admin@blog.com' and form.password.data == 'password':
+        instituition =  Instituition.query.all()
+        if  len(instituition) and bcrypt.check_password_hash(instituition[0].password, form.password.data):
             flash('You have been logged in!', 'success')
             return redirect(url_for('dashboard_home'))
         else:
