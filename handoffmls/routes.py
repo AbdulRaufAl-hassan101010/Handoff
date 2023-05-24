@@ -36,7 +36,7 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         instituition =  Instituition.query.all()
-        if  len(instituition) and bcrypt.check_password_hash(instituition[0].password, form.password.data):
+        if  len(instituition) > 0 and bcrypt.check_password_hash(instituition[0].password, form.password.data):
             flash('You have been logged in!', 'success')
             return redirect(url_for('dashboard_home'))
         else:
