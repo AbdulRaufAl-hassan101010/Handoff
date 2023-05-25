@@ -63,6 +63,7 @@ nav #profile-img {
 .landing-nav {
     border-bottom: 1px solid #f4f4f4;
 }
+
 @media (max-height: 798px) {
     #hero .over-lay {
         display: flex;
