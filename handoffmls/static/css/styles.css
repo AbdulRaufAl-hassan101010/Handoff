@@ -58,6 +58,11 @@ nav #profile-img {
     line-height: 1.5;
     font-weight: 300;
 }
+
+
+.landing-nav {
+    border-bottom: 1px solid #f4f4f4;
+}
 @media (max-height: 798px) {
     #hero .over-lay {
         display: flex;
