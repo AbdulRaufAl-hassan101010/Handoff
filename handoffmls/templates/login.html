@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 {% block content %}
-    <main class="w-50 mx-auto mt-5">
+    <main class="w-50 mx-auto my-5 card p-3">
     <div class="content-section">
         <form method="POST" action="">
             {{ form.hidden_tag() }}
@@ -38,7 +38,7 @@
                 </div>
             </fieldset>
             <div class="form-group mb-3">
-                {{ form.submit(class="btn btn-outline-primary") }}
+                {{ form.submit(class="btn btn-outline-primary btn-lg") }}
             </div>
             <small class="text-muted ml-2 mb-3">
                 <a href="#">Forgot Password?</a>
