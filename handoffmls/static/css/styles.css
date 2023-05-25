@@ -1,3 +1,4 @@
+
 body {
     font-family: 'Poppins', sans-serif;
 }
@@ -16,6 +17,19 @@ img {
     height: 100%;
 }
 
+.wrapper {
+    max-width: 798px;
+    width: 90%;
+    margin: 0 auto;
+}
+
+
+.container {
+    max-width: 1140px;
+    width: 90%;
+    margin: 0 auto;
+    padding: 10px 0;
+}
 nav #profile-img {
     width: 28px;
     height: 28px;
@@ -65,6 +79,7 @@ nav #profile-img {
 }
 
 @media (max-height: 798px) {
+
     #hero .over-lay {
         display: flex;
         align-items: center;
