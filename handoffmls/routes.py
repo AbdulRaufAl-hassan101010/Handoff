@@ -1,8 +1,8 @@
 from functools import wraps
 from flask import render_template, url_for, flash, redirect, session
 from handoffmls import app, db
-from handoffmls.forms import RegistrationForm, LoginForm
-from handoffmls.models import Instituition, User
+from handoffmls.forms import RegistrationForm, LoginForm, AddUserForm
+from handoffmls.models import Lab, User
 from flask_bcrypt import Bcrypt
 
 from  handoffmls.middlewares import authentication_required, is_logged_in
@@ -30,8 +30,8 @@ def register():
     form = RegistrationForm()
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
-        instituition = Instituition(name=form.name.data, email=form.email.data, password=hashed_password)
-        db.session.add(instituition)
+        lab = Lab(name=form.name.data, email=form.email.data, password=hashed_password)
+        db.session.add(lab)
         db.session.commit()
         flash('Your account has been created! You are now able to log in', 'success')
         return redirect(url_for('login'))
@@ -46,11 +46,12 @@ def login():
         email = form.email.data
         password = form.password.data
         
-        instituition =  Instituition.query.filter_by(email=email).first()
-        if  instituition and bcrypt.check_password_hash(instituition.password, password):
+        lab =  Lab.query.filter_by(email=email).first()
+        if  lab and bcrypt.check_password_hash(lab.password, password):
             # set session 
-            session['user_id']= instituition.id
-            session['username']= instituition.name
+            session['lab_id']= lab.id
+            session['username']= lab.name
+            session['type'] = 'lab'
             print(session)
             return redirect(url_for('dashboard_home'))
         else:
@@ -65,10 +66,44 @@ def dashboard_home():
     return render_template('dashboard/home.html', username=username, page="dashboard")
 
 
-@app.route("/logout", methods=['GET', 'POST'])
+@app.route("/logout")
 @authentication_required
 def logout():
     session.clear()
     print(session)
     flash('You have been logged out', 'danger')
-    return redirect(url_for('login'))   
+    return redirect(url_for('login')) 
+
+
+@app.route("/dashboard/users")
+@authentication_required
+def dashboard_users(): 
+    # get username from session
+    username = session.get('username')
+    # get all users from database
+    users = User.query.all()
+    return render_template('dashboard/users.html', username=username, page="dashboard", users=users, users_len=len(users))
+
+
+@app.route("/dashboard/user/add", methods=['GET', 'POST'])
+@authentication_required
+def add_user():
+    form = AddUserForm()
+    print(form.validate_on_submit())
+    if form.validate_on_submit():
+        first_name = form.first_name.data
+        last_name = form.last_name.data
+        other_name = form.other_name.data
+        email = form.email.data
+        lab_id = session.get('lab_id')
+        print(1234)
+        
+        user =  User(first_name=first_name, last_name=last_name, email=email, other_name=other_name, lab_id=lab_id)
+        db.session.add(user)
+        db.session.commit()
+        flash("User has been created!!!", "success")
+        return redirect(url_for('add_user'))
+    
+    # get all users from database
+    users = User.query.all()
+    return render_template('dashboard/add_user.html', title='Dashboard | Add user', form=form,users_len=len(users) )

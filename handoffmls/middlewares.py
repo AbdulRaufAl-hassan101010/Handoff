@@ -7,7 +7,7 @@ def authentication_required(route_function):
     def wrapper(*args, **kwargs):
         
         # Check if user is authenticated
-        if 'user_id' in session:
+        if 'lab_id' in session:
             # User is authenticated, proceed to the route function
             return route_function(*args, **kwargs)
         else:
@@ -23,7 +23,7 @@ def is_logged_in(route_function):
     def wrapper(*args, **kwargs):
         
         # Check if user is authenticated
-        if 'user_id' in session:
+        if 'lab_id' in session:
             # User is authenticated, redirect to dashboard page
             return redirect('/dashboard') 
             

@@ -1,0 +1,8 @@
+{% extends 'dashboard/user_layout.html' %}
+{% block content %}
+{% if users_len < 1 %}
+<h1 class="text-secondary text-center">No users, create users</h1>
+{% else %}
+{% include 'dashboard/users_table.html' %}
+{% endif %}
+{% endblock content %}
