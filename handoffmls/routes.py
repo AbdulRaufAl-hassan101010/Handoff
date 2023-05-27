@@ -1,11 +1,16 @@
-from flask import render_template, url_for, flash, redirect
+from functools import wraps
+from flask import render_template, url_for, flash, redirect, session
 from handoffmls import app, db
 from handoffmls.forms import RegistrationForm, LoginForm
 from handoffmls.models import Instituition, User
 from flask_bcrypt import Bcrypt
 
+from  handoffmls.middlewares import authentication_required
+
 # init bcrypt
 bcrypt = Bcrypt(app)
+
+
 
 
 @app.route("/")
@@ -35,9 +40,16 @@ def register():
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        instituition =  Instituition.query.all()
-        if  len(instituition) > 0 and bcrypt.check_password_hash(instituition[0].password, form.password.data):
+        email = form.email.data
+        password = form.password.data
+        
+        instituition =  Instituition.query.filter_by(email=email).first()
+        if  instituition and bcrypt.check_password_hash(instituition.password, password):
             flash('You have been logged in!', 'success')
+            # set session 
+            session['user_id']= instituition.id
+            session['username']= instituition.name
+            print(session)
             return redirect(url_for('dashboard_home'))
         else:
             flash('Login Unsuccessful. Please check username and password', 'danger')
@@ -45,5 +57,15 @@ def login():
 
 
 @app.route("/dashboard", methods=['GET', 'POST'])
-def dashboard_home():
-    return render_template("/dashboard/home.html")
+@authentication_required
+def dashboard_home(): 
+    username = session.get('username')     
+    return render_template('dashboard/home.html', username=username)
+
+
+@app.route("/logout", methods=['GET', 'POST'])
+def logout():
+    session.clear()
+    print(session)
+    flash('You have been logged out', 'danger')
+    return redirect(url_for('login'))   
