@@ -1,5 +1,90 @@
-{% include 'head.html' %}
-<html>
-{% include 'dashboard/navbar.html' %}
-<main class="d-flex align-items-center"></main>
-</html>
+{% extends 'layout.html' %} {% block content %}
+
+<main class="container mt-5">
+    <div class="d-flex"><h4 class="text-right">All Tasks</h4></div>
+  <div class="row align-items-start justify-content-between">
+    <div class="col-md-4 col-lg-3">
+      <ul class="list-group">
+        <li class="list-group-item">
+          <a
+            href=""
+            class="btn btn-light d-flex justify-content-between align-items-center"
+          >
+            All Tasks <span class="badge text-bg-primary">10</span></a
+          >
+        </li>
+        <li class="list-group-item">
+          <a
+            href=""
+            class="btn btn-light d-flex justify-content-between align-items-center"
+          >
+            In Progess <span class="badge text-light bg-warning">10</span></a
+          >
+        </li>
+        <li class="list-group-item">
+          <a
+            href=""
+            class="btn btn-light d-flex justify-content-between align-items-center"
+          >
+            Completed Task <span class="badge text-bg-success">100</span></a
+          >
+        </li>
+      </ul>
+    </div>
+    <div class="col-md-8 col-lg-9 mx-0">
+      
+      <div class="row">
+        <div class="col-md-6 col-lg-4 p-1">
+         <div class="card p-2 ">
+            <h4>Test for Malaria</h4>
+            <p class="text-secondary lead">
+              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quam,
+              fugiat?...
+            </p>
+            <small class="d-flex justify-content-between align-items-center"
+              ><a href="/">Abdul Khaliq </a> <span class="badge text-bg-success">completed</span></small
+            >
+         </div>
+        </div>
+        <div class="col-md-6 col-lg-4 p-1">
+         <div class="card p-2">
+            <h4>Test for Malaria</h4>
+            <p class="text-secondary lead">
+              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quam,
+              fugiat?...
+            </p>
+            <small class="d-flex justify-content-between align-items-center"
+              ><a href="/">Abdul Khaliq </a> <span class="badge text-bg-success">completed</span></small
+            >
+         </div>
+        </div>
+        <div class="col-md-6 col-lg-4 p-1">
+         <div class="card p-2">
+            <h4>Test for Malaria</h4>
+            <p class="text-secondary lead">
+              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quam,
+              fugiat?...
+            </p>
+            <small class="d-flex justify-content-between align-items-center"
+              ><a href="/">Abdul Khaliq </a> <span class="badge text-bg-success">completed</span></small
+            >
+         </div>
+        </div>
+        <div class="col-md-6 col-lg-4 p-1">
+         <div class="card p-2">
+            <h4>Test for Malaria</h4>
+            <p class="text-secondary lead">
+              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quam,
+              fugiat?...
+            </p>
+            <small class="d-flex justify-content-between align-items-center"
+              ><a href="/">Abdul Khaliq </a> <span class="badge text-bg-success">completed</span></small
+            >
+         </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+{% endblock content %}
