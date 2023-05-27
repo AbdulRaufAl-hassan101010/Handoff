@@ -38,6 +38,10 @@
       defer
     ></script>
 
+    <!-- ckeditor -->
+    <script src="https://cdn.ckeditor.com/ckeditor5/38.0.1/classic/ckeditor.js"></script>
+
+
     {% if title %}
     <title>{{ title }}</title>
     {% else %}
@@ -45,7 +49,7 @@
     {% endif %}
   </head>
   <body>
-    {% if page %}
+    {% if session.get('username') %}
     {% include 'dashboard/navbar.html' %}
     {% else %}
     {% include 'navbar.html' %}

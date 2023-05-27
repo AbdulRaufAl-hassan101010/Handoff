@@ -51,17 +51,29 @@ def login():
             # set session 
             session['lab_id']= lab.id
             session['username']= lab.name
-            session['type'] = 'lab'
-            print(session)
             return redirect(url_for('dashboard_home'))
-        else:
-            flash('Login Unsuccessful. Please check username and password', 'danger')
+        
+        user =  User.query.filter_by(email=email).first()
+        print(user and user.password == 'password')
+        # if  (user and bcrypt.check_password_hash(user.password, password)) and user.password == 'password':
+        if  user and user.password == 'password':
+            # clear sessions
+            session.clear()
+            
+            # set session 
+            session['user_id']= user.id
+            session['username']= f"{user.last_name}"
+            return redirect(url_for('dashboard_home'))
+        
+            
+        flash('Login Unsuccessful. Please check username and password', 'danger')
     return render_template('login.html', title='Login', form=form)
 
 
 @app.route("/dashboard", methods=['GET', 'POST'])
 @authentication_required
 def dashboard_home(): 
+    print(session)
     username = session.get('username')     
     return render_template('dashboard/home.html', username=username, page="dashboard")
 
@@ -70,14 +82,13 @@ def dashboard_home():
 @authentication_required
 def logout():
     session.clear()
-    print(session)
     flash('You have been logged out', 'danger')
     return redirect(url_for('login')) 
 
 
 @app.route("/dashboard/users")
 @authentication_required
-def dashboard_users(): 
+def dashboard_users():
     # get username from session
     username = session.get('username')
     # get all users from database
@@ -89,14 +100,12 @@ def dashboard_users():
 @authentication_required
 def add_user():
     form = AddUserForm()
-    print(form.validate_on_submit())
     if form.validate_on_submit():
         first_name = form.first_name.data
         last_name = form.last_name.data
         other_name = form.other_name.data
         email = form.email.data
         lab_id = session.get('lab_id')
-        print(1234)
         
         user =  User(first_name=first_name, last_name=last_name, email=email, other_name=other_name, lab_id=lab_id)
         db.session.add(user)
@@ -107,3 +116,10 @@ def add_user():
     # get all users from database
     users = User.query.all()
     return render_template('dashboard/add_user.html', title='Dashboard | Add user', form=form,users_len=len(users) )
+
+
+
+@app.route("/dashboard/create_handoff", methods=['GET', 'POST'])
+@authentication_required
+def create_handoff():
+    return render_template("dashboard/create_handoff.html")

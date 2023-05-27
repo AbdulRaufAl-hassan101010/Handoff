@@ -1,0 +1,39 @@
+{% extends 'layout.html' %} {% block content %}
+<div class="container mt-5">
+    <h1>Create Handoff</h1>
+<form action="" method="post">
+    <div class="form-group mb-5">
+        <label for="">Summary*</label>
+        <div id="summary" name="summary">This is some sample content.</div>
+    </div>
+    <div class="form-group mb-5 card p-3">
+        <h3>Name (Or Crew)</h3>
+        <div><input class="" type="checkbox" name="persons" value="Kwame">
+             <label for="">Kwame</label></div>
+        <div><input class="" type="checkbox" name="persons" value="Kelvin"> <label for="">Kelvin</label></div>
+    </div>
+    <div class="form-group mb-5">
+        <label for="">Actions*</label>
+        <div id="actions" name="actions">This is some sample content.</div>
+    </div>
+    <div class="form-group mb-5">
+        <label for="">Changes</label>
+        <div id="changes" name="changes">This is some sample content.</div>
+    </div>
+    <div class="form-group mb-5">
+        <label for="">Evaluation</label>
+        <div id="evaluation" name="evaluation">This is some sample content.</div>
+    </div>
+
+    <div class="form-group mb-5">
+        <input type="submit" class="btn btn-dark btn-lg" value="Create Handoff" name="submit">
+    </div>
+</form>
+</div>
+<script>
+    ClassicEditor.create( document.querySelector( '#summary' ) );
+    ClassicEditor.create( document.querySelector( '#actions' ) );
+    ClassicEditor.create( document.querySelector( '#changes' ) );
+    ClassicEditor.create( document.querySelector( '#evaluation' ) );
+</script>
+{% endblock content %}

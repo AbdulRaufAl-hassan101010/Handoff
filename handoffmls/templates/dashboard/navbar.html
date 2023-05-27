@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg bg-dark" data-bs-theme="dark">
-    <div class="container-fluid container-md">
+    <div class="container">
         <a class="navbar-brand" href="/">Dashboard</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
             aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -32,13 +32,17 @@
                     </ul>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                    <a class="nav-link dropdown-toggle" href="/" role="button" data-bs-toggle="dropdown"
                         aria-expanded="false">
                         {{session.get('username')}}
                         <img id="profile-img" src="/static/imgs/profile.png" alt="">
                     </a>
                     <ul class="dropdown-menu">
+                        {% if session.get('lab_id') %}
                         <li><a class="dropdown-item" href="{{ url_for('dashboard_users') }}">Add User</a></li>
+                        {% else %}
+                        <li><a class="dropdown-item" href="{{ url_for('create_handoff') }}">Create Handoff</a></li>
+                        {% endif %}
                         <li><a class="dropdown-item" href="#">Another action</a></li>
                         <li>
                             <hr class="dropdown-divider">
