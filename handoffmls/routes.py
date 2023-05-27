@@ -17,7 +17,9 @@ bcrypt = Bcrypt(app)
 @app.route("/home")
 @is_logged_in
 def home():
-    return render_template("home.html")
+    total_users = len(User.query.all())
+    total_labs = len(Lab.query.all())
+    return render_template("home.html", total_users=total_users, total_labs=total_labs)
 
 
 @app.route("/about")
@@ -54,9 +56,9 @@ def login():
             return redirect(url_for('dashboard_home'))
         
         user =  User.query.filter_by(email=email).first()
-        print(user and user.password == 'password')
         # if  (user and bcrypt.check_password_hash(user.password, password)) and user.password == 'password':
-        if  user and user.password == 'password':
+        print(user)
+        if  user and user.password == password:
             # clear sessions
             session.clear()
             
