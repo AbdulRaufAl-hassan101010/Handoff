@@ -1,39 +1,79 @@
 {% extends 'layout.html' %} {% block content %}
 <div class="container mt-5">
-    <h1>Create Handoff</h1>
-<form action="" method="post">
-    <div class="form-group mb-5">
-        <label for="">Summary*</label>
-        <div id="summary" name="summary">This is some sample content.</div>
+  <form method="POST" action="">
+    {{ form.hidden_tag() }}
+    <fieldset class="form-group mb-3">
+      <legend class="border-bottom mb-4">Create Handoff</legend>
+      <div class="form-group mb-3">
+        {{ form.summary.label(class="form-control-label") }} {% if
+        form.summary.errors %} {{ form.summary(class="form-control
+        form-control-lg is-invalid") }}
+        <div class="invalid-feedback">
+          {% for error in form.summary.errors %}
+          <span>{{ error }}</span>
+          {% endfor %}
+        </div>
+        {% else %} {{ form.summary(class="form-control form-control-lg") }} {%
+        endif %}
+      </div>
+      <div class="form-group mb-3">
+        {{ form.actions.label(class="form-control-label") }} {% if
+        form.actions.errors %} {{ form.actions(class="form-control
+        form-control-lg is-invalid") }}
+        <div class="invalid-feedback">
+          {% for error in form.actions.errors %}
+          <span>{{ error }}</span>
+          {% endfor %}
+        </div>
+        {% else %} {{ form.actions(class="form-control form-control-lg") }} {%
+        endif %}
+      </div>
+      <div class="form-group mb-3">
+        {{ form.changes.label(class="form-control-label") }} {% if
+        form.changes.errors %} {{ form.changes(class="form-control
+        form-control-lg is-invalid") }}
+        <div class="invalid-feedback">
+          {% for error in form.changes.errors %}
+          <span>{{ error }}</span>
+          {% endfor %}
+        </div>
+        {% else %} {{ form.changes(class="form-control form-control-lg") }} {%
+        endif %}
+      </div>
+      <div class="form-group mb-3">
+        {{ form.evaluation.label(class="form-control-label") }} {% if
+        form.evaluation.errors %} {{ form.evaluation(class="form-control
+        form-control-lg is-invalid") }}
+        <div class="invalid-feedback">
+          {% for error in form.evaluation.errors %}
+          <span>{{ error }}</span>
+          {% endfor %}
+        </div>
+        {% else %} {{ form.evaluation(class="form-control form-control-lg") }}
+        {% endif %}
+      </div>
+      <div>
+        {{ form.persons.label }}
+        <ul>
+          {% for subfield in form.persons %}
+          <div>
+            <label>
+              <input
+                type="checkbox"
+                name="{{ subfield.name }}"
+                value="{{ subfield.data }}"
+              />
+              {{ subfield.label }}
+            </label>
+          </div>
+          {% endfor %}
+        </ul>
+      </div>
+    </fieldset>
+    <div class="form-group mb-3">
+      {{ form.submit(class="btn btn-outline-dark btn-lg") }}
     </div>
-    <div class="form-group mb-5 card p-3">
-        <h3>Name (Or Crew)</h3>
-        <div><input class="" type="checkbox" name="persons" value="Kwame">
-             <label for="">Kwame</label></div>
-        <div><input class="" type="checkbox" name="persons" value="Kelvin"> <label for="">Kelvin</label></div>
-    </div>
-    <div class="form-group mb-5">
-        <label for="">Actions*</label>
-        <div id="actions" name="actions">This is some sample content.</div>
-    </div>
-    <div class="form-group mb-5">
-        <label for="">Changes</label>
-        <div id="changes" name="changes">This is some sample content.</div>
-    </div>
-    <div class="form-group mb-5">
-        <label for="">Evaluation</label>
-        <div id="evaluation" name="evaluation">This is some sample content.</div>
-    </div>
-
-    <div class="form-group mb-5">
-        <input type="submit" class="btn btn-dark btn-lg" value="Create Handoff" name="submit">
-    </div>
-</form>
+  </form>
 </div>
-<script>
-    ClassicEditor.create( document.querySelector( '#summary' ) );
-    ClassicEditor.create( document.querySelector( '#actions' ) );
-    ClassicEditor.create( document.querySelector( '#changes' ) );
-    ClassicEditor.create( document.querySelector( '#evaluation' ) );
-</script>
+
 {% endblock content %}
