@@ -45,6 +45,10 @@ class Handoff(db.Model):
     created_by = db.Column(
         db.Integer, db.ForeignKey('user.id'), nullable=False)
     assign_to = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    lab_id = db.Column(db.Integer, db.ForeignKey('lab.id'), nullable=False)
+    created_by_user = db.relationship("User", foreign_keys=[created_by])
+    assign_to_user = db.relationship("User", foreign_keys=[assign_to])
+    lab_info = db.relationship("Lab", foreign_keys=[lab_id])
 
     __table_args__ = (
         CheckConstraint(status.in_(
@@ -52,4 +56,4 @@ class Handoff(db.Model):
     )
 
     def __repr__(self):
-        return f"Post('{self.first_name}', '{self.created_at}')"
+        return f"Post('{self.id}', '{self.created_at}')"

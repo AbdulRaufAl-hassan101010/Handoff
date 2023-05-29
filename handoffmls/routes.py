@@ -76,7 +76,16 @@ def login():
 @app.route("/dashboard", methods=['GET', 'POST'])
 @authentication_required
 def dashboard_home():
-    return render_template('dashboard/home.html', page="dashboard")
+    # if signed in as user desplay only handoffs created by that users
+    user_id = session.get('user_id')
+    lab_id = session.get('lab_id')
+    handoffs = []
+    if user_id:
+        handoffs = Handoff.query.filter_by(created_by=user_id).all()
+    else:
+        # else if signed in as lab  desplay all  handoffs
+        handoffs = Handoff.query.filter_by(lab_id=lab_id).all()
+    return render_template('dashboard/home.html', handoffs=handoffs, handoffs_len=len(handoffs))
 
 
 @app.route("/logout")
@@ -132,10 +141,13 @@ def add_user():
 @app.route("/dashboard/create_handoff", methods=['GET', 'POST'])
 @authentication_required
 def create_handoff():
+    
+    # get user_id, lab_id sessions
+    lab_id = session.get("user_lab_id")
+    user_id = session.get("user_id")
 
     def get_users_in_lab():
-        # get lab_id from session
-        lab_id = session.get("user_lab_id")
+        
 
         # get all users belonging to this lab from database
         lab = Lab.query.get(lab_id)
@@ -155,10 +167,10 @@ def create_handoff():
         actions = form.actions.data
         changes = form.changes.data
         evaluation = form.evaluation.data
-        user_id = session.get("user_id")
+        
 
         handoff = Handoff(summary=summary, persons=persons,
-                          actions=actions, changes=changes, evaluation=evaluation, created_by=user_id, assign_to=user_id)
+                          actions=actions, changes=changes, evaluation=evaluation, created_by=user_id, assign_to=user_id, lab_id=lab_id)
         db.session.add(handoff)
         db.session.commit()
 
