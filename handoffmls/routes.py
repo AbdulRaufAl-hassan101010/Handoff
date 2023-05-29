@@ -79,13 +79,25 @@ def dashboard_home():
     # if signed in as user desplay only handoffs created by that users
     user_id = session.get('user_id')
     lab_id = session.get('lab_id')
-    handoffs = []
+    handoffs_all = []
+    handoffs_in_progress = []
+    handoffs_completed = []
+    query = []
     if user_id:
-        handoffs = Handoff.query.filter_by(created_by=user_id).all()
+        query = Handoff.query.filter_by(created_by=user_id)
+        handoffs_all = query.all()
     else:
         # else if signed in as lab  desplay all  handoffs
-        handoffs = Handoff.query.filter_by(lab_id=lab_id).all()
-    return render_template('dashboard/home.html', handoffs=handoffs, handoffs_len=len(handoffs))
+        query = Handoff.query.filter_by(lab_id=lab_id)
+        handoffs_all = query.all()
+
+    # get handsoff base on status (in progress, completed)
+    handoffs_in_progress = query.filter_by(
+        status="in progress").all()
+    handoffs_completed = query.filter_by(
+        status="in completed").all()
+
+    return render_template('dashboard/home.html', handoffs=handoffs_all, handoffs_len=len(handoffs_all), in_progess_len=len(handoffs_in_progress), completed_len=len(handoffs_completed))
 
 
 @app.route("/logout")
@@ -141,14 +153,12 @@ def add_user():
 @app.route("/dashboard/create_handoff", methods=['GET', 'POST'])
 @authentication_required
 def create_handoff():
-    
+
     # get user_id, lab_id sessions
     lab_id = session.get("user_lab_id")
     user_id = session.get("user_id")
 
     def get_users_in_lab():
-        
-
         # get all users belonging to this lab from database
         lab = Lab.query.get(lab_id)
         users = lab.employees
@@ -167,7 +177,6 @@ def create_handoff():
         actions = form.actions.data
         changes = form.changes.data
         evaluation = form.evaluation.data
-        
 
         handoff = Handoff(summary=summary, persons=persons,
                           actions=actions, changes=changes, evaluation=evaluation, created_by=user_id, assign_to=user_id, lab_id=lab_id)
