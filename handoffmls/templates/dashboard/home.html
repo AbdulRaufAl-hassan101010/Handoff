@@ -7,7 +7,7 @@
       <ul class="list-group">
         <li class="list-group-item">
           <a
-            href=""
+            href="{{ url_for('dashboard_home') }}"
             class="btn btn-light d-flex justify-content-between align-items-center"
           >
             All Handoffs
@@ -16,27 +16,30 @@
         </li>
         <li class="list-group-item">
           <a
-            href=""
+            href="{{ url_for('dashboard_home') }}/inprogress"
             class="btn btn-light d-flex justify-content-between align-items-center"
           >
-            In Progess <span class="badge text-light bg-warning">{{in_progess_len}}</span></a
+            In Progess
+            <span class="badge text-light bg-warning"
+              >{{in_progess_len}}</span
+            ></a
           >
         </li>
         <li class="list-group-item">
           <a
-            href=""
+            href="{{ url_for('dashboard_home') }}/completed"
             class="btn btn-light d-flex justify-content-between align-items-center"
           >
-            Completed Task <span class="badge text-bg-success">{{completed_len}}</span></a
+            Completed Task
+            <span class="badge text-bg-success">{{completed_len}}</span></a
           >
         </li>
       </ul>
     </div>
     <div class="col-md-8 col-lg-9 mx-0">
       <div class="row">
-        {% for handoff in handoffs %}
-        {% include 'dashboard/handoff_item.html' %}
-        {% endfor %}
+        {% for handoff in handoffs %} {% include 'dashboard/handoff_item.html'
+        %} {% endfor %}
       </div>
     </div>
   </div>

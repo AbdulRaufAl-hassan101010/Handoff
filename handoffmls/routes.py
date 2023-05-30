@@ -74,10 +74,7 @@ def login():
     return render_template('login.html', title='Login', form=form)
 
 
-@app.route("/dashboard", methods=['GET', 'POST'])
-@authentication_required
-def dashboard_home():
-    # if signed in as user desplay only handoffs created by that users
+def get_handoffs_data():
     user_id = session.get('user_id')
     lab_id = session.get('lab_id')
     user_email = session.get('email')
@@ -85,6 +82,7 @@ def dashboard_home():
     handoffs_in_progress = []
     handoffs_completed = []
     query = []
+    # if signed in as user display only handoffs user in involved in
     if user_id:
         query = Handoff.query.filter(Handoff.persons.like(f'%"{user_email}"%'))
         handoffs_all = query.all()
@@ -97,9 +95,30 @@ def dashboard_home():
     handoffs_in_progress = query.filter_by(
         status="in progress").all()
     handoffs_completed = query.filter_by(
-        status="in completed").all()
+        status="completed").all()
 
-    return render_template('dashboard/home.html', handoffs=handoffs_all, handoffs_len=len(handoffs_all), in_progess_len=len(handoffs_in_progress), completed_len=len(handoffs_completed))
+    return {'handoffs_all': handoffs_all, 'handoffs_in_progress': handoffs_in_progress, 'handoffs_completed': handoffs_completed}
+
+
+@app.route("/dashboard")
+def render_home():
+    data = get_handoffs_data()
+
+    return render_template('dashboard/home.html', handoffs=data['handoffs_all'], handoffs_len=len(data['handoffs_all']), in_progess_len=len(data['handoffs_in_progress']), completed_len=len(data['handoffs_completed']))
+
+
+@app.route("/dashboard")
+@app.route('/dashboard/<path>')
+@authentication_required
+def dashboard_home(path=None):
+    data = get_handoffs_data()
+
+    if path == "inprogress":
+        return render_template('dashboard/home.html', handoffs=data['handoffs_in_progress'], handoffs_len=len(data['handoffs_all']), in_progess_len=len(data['handoffs_in_progress']), completed_len=len(data['handoffs_completed']))
+    elif path == "completed":
+        return render_template('dashboard/home.html', handoffs=data['handoffs_completed'], handoffs_len=len(data['handoffs_all']), in_progess_len=len(data['handoffs_in_progress']), completed_len=len(data['handoffs_completed']))
+
+    return redirect(url_for('render_home'))
 
 
 @app.route("/logout")
