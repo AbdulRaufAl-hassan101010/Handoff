@@ -67,6 +67,7 @@ def login():
             session['user_id'] = user.id
             session['username'] = f"{user.last_name}"
             session["user_lab_id"] = user.lab_id
+            session["email"] = user.email
             return redirect(url_for('dashboard_home'))
 
         flash('Login Unsuccessful. Please check username and password', 'danger')
@@ -79,12 +80,13 @@ def dashboard_home():
     # if signed in as user desplay only handoffs created by that users
     user_id = session.get('user_id')
     lab_id = session.get('lab_id')
+    user_email = session.get('email')
     handoffs_all = []
     handoffs_in_progress = []
     handoffs_completed = []
     query = []
     if user_id:
-        query = Handoff.query.filter_by(created_by=user_id)
+        query = Handoff.query.filter(Handoff.persons.like(f'%"{user_email}"%'))
         handoffs_all = query.all()
     else:
         # else if signed in as lab  desplay all  handoffs
@@ -186,5 +188,3 @@ def create_handoff():
         return redirect(url_for('dashboard_home'))
 
     return render_template("dashboard/create_handoff.html", form=form)
-
-
