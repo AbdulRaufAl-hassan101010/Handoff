@@ -11,7 +11,7 @@ class Lab(db.Model):
     employees = db.relationship('User', backref='lab', lazy=True)
 
     def __repr__(self):
-        return f"User('{self.name}', '{self.email}', '{self.image_file}')"
+        return f"Lab('{self.name}', ' {self.email}', '{self.image_file}')"
 
 
 class User(db.Model):
@@ -26,4 +26,4 @@ class User(db.Model):
     lab_id = db.Column(db.Integer, db.ForeignKey('lab.id'), nullable=False)
 
     def __repr__(self):
-        return f"Post('{self.first_name}', '{self.created_at}')"
+        return f"User('{self.first_name} {self.last_name}', '{self.created_at}')"
