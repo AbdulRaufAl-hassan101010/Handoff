@@ -186,3 +186,5 @@ def create_handoff():
         return redirect(url_for('dashboard_home'))
 
     return render_template("dashboard/create_handoff.html", form=form)
+
+
