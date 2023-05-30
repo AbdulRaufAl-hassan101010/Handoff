@@ -60,9 +60,9 @@ nav #profile-img {
   top: 0;
   left: 0;
   width: 100%;
-  min-height: 100%;
+  min-height: calc(100vh - 68px);
+  height: 100%;
   background: rgba(3, 28, 255, 0.7);
-  /* text-shadow: 1px 3px 2px #ccc; */
 }
 
 #hero .over-lay .hero-content {
@@ -99,5 +99,18 @@ nav #profile-img {
 
   #hero .over-lay .hero-content {
     padding-top: 0;
+  }
+}
+
+@media (max-height: 497px) {
+  #hero .over-lay .hero-content h1 {
+    font-weight: bold;
+    font-size: 40px;
+  }
+
+  #hero .over-lay .hero-content p {
+    font-size: 20px;
+    line-height: 1.5;
+    font-weight: 300;
   }
 }
