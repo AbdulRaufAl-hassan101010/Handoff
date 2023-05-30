@@ -193,6 +193,10 @@ def create_handoff():
     form.persons.choices = get_users_in_lab()
 
     if form.validate_on_submit():
+        # added creator to person list
+        user_email = session.get('email')
+        form.persons.data.append(user_email)
+
         summary = form.summary.data
         persons = json.dumps(form.persons.data)
         actions = form.actions.data

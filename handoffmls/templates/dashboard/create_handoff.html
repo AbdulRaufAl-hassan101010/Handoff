@@ -58,12 +58,9 @@
           {% for subfield in form.persons %}
           <div>
             <label>
-              <input
-                type="checkbox"
-                name="{{ subfield.name }}"
-                value="{{ subfield.data }}"
-              />
-              {{ subfield.label }}
+              <input type="checkbox" name="{{ subfield.name }}" value="{{
+              subfield.data }}" {% if subfield.data == session.get('email') %}
+              checked disabled {% endif %} /> {{ subfield.label }}
             </label>
           </div>
           {% endfor %}
@@ -75,5 +72,4 @@
     </div>
   </form>
 </div>
-
 {% endblock content %}
