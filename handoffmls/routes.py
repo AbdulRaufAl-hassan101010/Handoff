@@ -105,7 +105,7 @@ def get_handoffs_data():
 def render_home():
     data = get_handoffs_data()
 
-    return render_template('dashboard/home.html', handoffs=data['handoffs_all'], handoffs_len=len(data['handoffs_all']), in_progess_len=len(data['handoffs_in_progress']), completed_len=len(data['handoffs_completed']))
+    return render_template('dashboard/home.html', handoffs=data['handoffs_all'], handoffs_len=len(data['handoffs_all']), in_progess_len=len(data['handoffs_in_progress']), completed_len=len(data['handoffs_completed']), title="All Handoffs")
 
 
 @app.route("/dashboard")
@@ -115,9 +115,9 @@ def dashboard_home(path=None):
     data = get_handoffs_data()
 
     if path == "inprogress":
-        return render_template('dashboard/home.html', handoffs=data['handoffs_in_progress'], handoffs_len=len(data['handoffs_all']), in_progess_len=len(data['handoffs_in_progress']), completed_len=len(data['handoffs_completed']))
+        return render_template('dashboard/home.html', handoffs=data['handoffs_in_progress'], handoffs_len=len(data['handoffs_all']), in_progess_len=len(data['handoffs_in_progress']), completed_len=len(data['handoffs_completed']),  title=path)
     elif path == "completed":
-        return render_template('dashboard/home.html', handoffs=data['handoffs_completed'], handoffs_len=len(data['handoffs_all']), in_progess_len=len(data['handoffs_in_progress']), completed_len=len(data['handoffs_completed']))
+        return render_template('dashboard/home.html', handoffs=data['handoffs_completed'], handoffs_len=len(data['handoffs_all']), in_progess_len=len(data['handoffs_in_progress']), completed_len=len(data['handoffs_completed']),  title=path)
 
     return redirect(url_for('render_home'))
 
