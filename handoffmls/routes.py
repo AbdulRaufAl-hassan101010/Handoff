@@ -101,6 +101,7 @@ def get_handoffs_data():
 
 
 @app.route("/dashboard")
+@authentication_required
 def render_home():
     data = get_handoffs_data()
 
@@ -211,3 +212,9 @@ def create_handoff():
         return redirect(url_for('dashboard_home'))
 
     return render_template("dashboard/create_handoff.html", form=form)
+
+
+@app.route("/dashboard/profile")
+@authentication_required
+def profile():
+    return render_template("dashboard/profile.html")

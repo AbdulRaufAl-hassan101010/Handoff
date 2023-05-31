@@ -1,0 +1,42 @@
+{% extends 'layout.html' %} {% block content %}
+
+<main class="container mt-5">
+  <div class="row align-items-start justify-content-between">
+    <div class="col-md-4 col-lg-3">
+      <ul class="list-group">
+        <li class="list-group-item">
+          <a
+            href="{{ url_for('dashboard_home') }}"
+            class="btn btn-light d-flex justify-content-between align-items-center"
+          >
+            Profile Info
+          </a>
+        </li>
+        <li class="list-group-item">
+          <a
+            href="{{ url_for('dashboard_home') }}/inprogress"
+            class="btn btn-light d-flex justify-content-between align-items-center"
+          >
+            Credentials
+          </a>
+        </li>
+        <li class="list-group-item">
+          <a
+            href="{{ url_for('dashboard_home') }}/completed"
+            class="btn btn-light d-flex justify-content-between align-items-center"
+          >
+            History
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="col-md-8 col-lg-9 mx-0">
+      <div class="row">
+        {% for handoff in handoffs %} {% include 'dashboard/handoff_item.html'
+        %} {% endfor %}
+      </div>
+    </div>
+  </div>
+</main>
+
+{% endblock content %}
