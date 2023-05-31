@@ -217,4 +217,10 @@ def create_handoff():
 @app.route("/dashboard/profile")
 @authentication_required
 def profile():
-    return render_template("dashboard/profile.html")
+    if session.get('user_id'):
+        form = AddUserForm()
+        form.submit.label.text = 'Update User'
+    else:
+        form = RegistrationForm()
+        form.submit.label.text = 'Update Lab'
+    return render_template("dashboard/profile.html", form=form)
