@@ -9,6 +9,7 @@ from handoffmls.middlewares import authentication_required, is_logged_in
 
 # init bcrypt
 bcrypt = Bcrypt(app)
+print(1)
 
 
 @app.route("/")
@@ -217,10 +218,39 @@ def create_handoff():
 @app.route("/dashboard/profile")
 @authentication_required
 def profile():
-    if session.get('user_id'):
+    user_id = session.get('user_id')
+
+    if user_id:
         form = AddUserForm()
         form.submit.label.text = 'Update User'
+
+        data = User.query.get(user_id)
+
+        if data:
+            form.first_name.data = data.first_name
+            form.last_name.data = data.last_name
+            form.other_name.data = data.other_name
+            form.email.data = data.email
+
     else:
         form = RegistrationForm()
         form.submit.label.text = 'Update Lab'
+        data = {}
     return render_template("dashboard/profile.html", form=form)
+
+
+@app.route("/dashboard/profile", methods=["POST"])
+@authentication_required
+def update_user():
+    user_id = session.get('user_id')
+    form = AddUserForm()
+    data = User.query.get(user_id)
+    print(form.email.data)
+    if form.validate_on_submit():
+        data.first_name = form.first_name.data
+        data.last_name = form.last_name.data
+        data.other_name = form.other_name.data
+        data.email = form.email.data
+        db.session.commit()
+        
+    return redirect(url_for('profile'))
