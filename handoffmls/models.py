@@ -49,7 +49,7 @@ class Handoff(db.Model):
     created_by_user = db.relationship("User", foreign_keys=[created_by])
     assign_to_user = db.relationship("User", foreign_keys=[assign_to])
     lab_info = db.relationship("Lab", foreign_keys=[lab_id])
-
+    tasks = db.relationship('Task', backref='handoff', lazy=True)
     __table_args__ = (
         CheckConstraint(status.in_(
             ["in progress", "completed"]), name="check_status"),
@@ -57,3 +57,14 @@ class Handoff(db.Model):
 
     def __repr__(self):
         return f"Post('{self.first_name}', '{self.created_at}')"
+    
+
+class Task(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    handoff_id = db.Column(db.Integer, db.ForeignKey('handoff.id'), nullable=False)
+    description = db.Column(db.Text, nullable=False)
+    completed = db.Column(db.Boolean, nullable=False, default=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    def __repr__(self):
+        return f"Task('{self.description}', '{self.created_at}', '{self.completed}')", 
