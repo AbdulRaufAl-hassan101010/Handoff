@@ -1,7 +1,12 @@
 from handoffmls import app, db
-
+from handoffmls.models.lab import Lab
+from handoffmls.models.user import User
+from handoffmls.models.task import Task
+from handoffmls.models.handoff import Handoff
 
 if __name__ == "__main__":
     with app.app_context():
+        # Define the tables in the desired order
+        db.reflect()
         db.create_all()
-    app.run(host="0.0.0.0", debug=True, port=5000)   
+    app.run(host="0.0.0.0", debug=True, port=5000)

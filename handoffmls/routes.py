@@ -1,7 +1,9 @@
 from flask import render_template, url_for, flash, redirect, session, jsonify
 from handoffmls import app, db
 from handoffmls.forms import RegistrationForm, LoginForm, AddUserForm, CreateHandoffForm
-from handoffmls.models import Lab, User, Handoff
+from handoffmls.models.lab import Lab
+from handoffmls.models.user import User
+from handoffmls.models.handoff import Handoff
 from flask_bcrypt import Bcrypt
 import json
 
@@ -252,5 +254,5 @@ def update_user():
         data.other_name = form.other_name.data
         data.email = form.email.data
         db.session.commit()
-        
+
     return redirect(url_for('profile'))
