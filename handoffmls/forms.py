@@ -63,6 +63,6 @@ class CreateHandoffForm(FlaskForm):
     changes = TextAreaField('Changes', validators=[DataRequired()])
     evaluation = TextAreaField('Evaluation',
                                validators=[DataRequired()])
-    persons = SelectMultipleField('Names or Crew', validators=[DataRequired(
-    )], option_widget=widgets.CheckboxInput(), widget=widgets.ListWidget(prefix_label=False))
+    persons = SelectMultipleField('Names or Crew', option_widget=widgets.CheckboxInput(
+    ), widget=widgets.ListWidget(prefix_label=False))
     submit = SubmitField('Create Handoff')

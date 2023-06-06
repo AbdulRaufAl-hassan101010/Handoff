@@ -60,19 +60,19 @@
           <ul class="dropdown-menu">
             {% if session.get('lab_id') %}
             <li>
-              <a class="dropdown-item" href="{{ url_for('dashboard_users') }}"
+              <a class="dropdown-item" href="{{ url_for('dashboard.dashboard_users') }}"
                 >Add User</a
               >
             </li>
             {% else %}
             <li>
-              <a class="dropdown-item" href="{{ url_for('create_handoff') }}"
+              <a class="dropdown-item" href="{{ url_for('dashboard.create_handoff') }}"
                 >Create Handoff</a
               >
             </li>
             {% endif %}
             <li>
-              <a class="dropdown-item" href="{{ url_for('profile') }}"
+              <a class="dropdown-item" href="{{ url_for('dashboard.profile') }}"
                 >Profile</a
               >
             </li>
@@ -80,7 +80,7 @@
               <hr class="dropdown-divider" />
             </li>
             <li>
-              <a class="dropdown-item" href="{{ url_for('logout') }}">logout</a>
+              <a class="dropdown-item" href="{{ url_for('dashboard.logout') }}">logout</a>
             </li>
           </ul>
         </li>

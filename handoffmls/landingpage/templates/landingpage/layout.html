@@ -38,6 +38,25 @@
       defer
     ></script>
 
+    <!-- favioc  -->
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="/static/imgs/favicon_io/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="/static/imgs/favicon_io/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="/static/imgs/favicon_io/favicon-16x16.png"
+    />
+    <link rel="manifest" href="/static/imgs/favicon_io/site.webmanifest" />
     {% if title %}
     <title>{{ title }}</title>
     {% else %}
@@ -45,35 +64,10 @@
     {% endif %}
   </head>
   <body>
-    
-    {% include 'dashboard/navbar.html' %}
-    <main class="container mt-5">
-        <div class="row align-items-start justify-content-between">
-          <div class="col-md-4 col-lg-3">
-            <ul class="list-group">
-              <li class="list-group-item">
-                <a
-                  href="{{url_for('dashboard_users')}}"
-                  class="btn btn-light d-flex justify-content-between align-items-center"
-                >
-                  All Users <span class="badge text-bg-primary">{{users_len}}</span></a
-                >
-              </li>
-              <li class="list-group-item">
-                <a
-                  href="{{url_for('add_user')}}"
-                  class="btn btn-light d-flex justify-content-between align-items-center"
-                >
-                  Add User <span class="badge text-light bg-dark"><i class="fa-solid fa-plus"></i></span></a
-                >
-              </li>
-            </ul>
-          </div>
-          <div class="col-md-8 col-lg-9 mx-0">
-            {% block content %}{% endblock %}     
-          </div>
-        </div>
-      </main>
-    
+    {% include 'navbar.html' %} {% with messages =
+    get_flashed_messages(with_categories=true) %} {% if messages %} {% for
+    category, message in messages %}
+    <div class="container alert alert-{{ category }}">{{ message }}</div>
+    {% endfor %} {% endif %} {% endwith %} {% block content %}{% endblock %}
   </body>
 </html>

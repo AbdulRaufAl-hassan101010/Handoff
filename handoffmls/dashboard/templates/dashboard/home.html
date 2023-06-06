@@ -1,4 +1,4 @@
-{% extends 'layout.html' %} {% block content %}
+{% extends 'dashboard/layout.html' %} {% block content %}
 
 <main class="container mt-5">
   <div class="d-flex"><h4 class="text-right">{{title.upper()}}</h4></div>
@@ -7,7 +7,7 @@
       <ul class="list-group">
         <li class="list-group-item">
           <a
-            href="{{ url_for('dashboard_home') }}"
+            href="{{ url_for('dashboard.dashboard_home') }}"
             class="btn btn-light d-flex justify-content-between align-items-center"
           >
             All Handoffs
@@ -16,7 +16,7 @@
         </li>
         <li class="list-group-item">
           <a
-            href="{{ url_for('dashboard_home') }}/inprogress"
+            href="{{ url_for('dashboard.dashboard_home') }}/inprogress"
             class="btn btn-light d-flex justify-content-between align-items-center"
           >
             In Progess
@@ -27,7 +27,7 @@
         </li>
         <li class="list-group-item">
           <a
-            href="{{ url_for('dashboard_home') }}/completed"
+            href="{{ url_for('dashboard.dashboard_home') }}/completed"
             class="btn btn-light d-flex justify-content-between align-items-center"
           >
             Completed Task
