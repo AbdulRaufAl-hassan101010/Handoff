@@ -1,6 +1,7 @@
 from flask import render_template, url_for, flash, redirect, session
 from handoffmls import app, db
-from handoffmls.forms import RegistrationForm, LoginForm
+from handoffmls.landingpage.forms import RegistrationForm, LoginForm
+
 from handoffmls.models.lab import Lab
 from handoffmls.models.user import User
 from flask_bcrypt import Bcrypt

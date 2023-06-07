@@ -1,4 +1,5 @@
 from handoffmls import app, db
+# imported tables to make db.reflect  create tables in order specified 
 from handoffmls.models.lab import Lab
 from handoffmls.models.user import User
 from handoffmls.models.task import Task

@@ -1,7 +1,8 @@
 from flask import render_template, url_for, flash, redirect, session, jsonify
 from handoffmls import app, db
 from handoffmls.dashboard import dashboard
-from handoffmls.forms import RegistrationForm, AddUserForm, CreateHandoffForm
+from handoffmls.forms import RegistrationForm
+from handoffmls.dashboard.forms import AddUserForm, CreateHandoffForm
 from handoffmls.models.lab import Lab
 from handoffmls.models.user import User
 from handoffmls.models.handoff import Handoff

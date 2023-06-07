@@ -1,8 +1,7 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField, widgets, SelectMultipleField
+from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from handoffmls.models.lab import Lab
-from handoffmls.models.user import User
 
 
 class RegistrationForm(FlaskForm):
@@ -26,16 +25,3 @@ class RegistrationForm(FlaskForm):
         if instituition:
             raise ValidationError(
                 'That email is taken. Please choose a different one.')
-
-
-class CreateHandoffForm(FlaskForm):
-    summary = TextAreaField('Summary',
-                            validators=[DataRequired(), Length(min=5)])
-    actions = TextAreaField('Actions',
-                            validators=[DataRequired(), Length(min=5)])
-    changes = TextAreaField('Changes', validators=[DataRequired()])
-    evaluation = TextAreaField('Evaluation',
-                               validators=[DataRequired()])
-    persons = SelectMultipleField('Names or Crew', option_widget=widgets.CheckboxInput(
-    ), widget=widgets.ListWidget(prefix_label=False))
-    submit = SubmitField('Create Handoff')
