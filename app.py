@@ -10,4 +10,4 @@ if __name__ == "__main__":
         # Define the tables in the desired order
         db.reflect()
         db.create_all()
-    app.run(host="0.0.0.0", debug=True, port=5000)
+    app.run()
