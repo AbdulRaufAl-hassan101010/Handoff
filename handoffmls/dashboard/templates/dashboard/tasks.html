@@ -1,0 +1,28 @@
+{% extends "dashboard/layout.html" %} {% block content %}
+<div class="container mt-5">
+  <form action="" method="POST">
+    <legend>Tasks</legend>
+    {% for index, task in enumerate(tasks) %}
+
+    <div class="card p-3 mb-2">
+      <div class="d-flex justify-content-between">
+        <span>{{index+1}}. {{task.description}}</span>
+        <span
+          ><input type="checkbox" name="{{index}}" class="form-check-input" {%
+          if task.completed == True %} disabled checked {% endif %} /></span
+        >
+      </div>
+    </div>
+
+    {% endfor %}
+    <div class="d-grid">
+      {% if not all_completed and session.get('user_id') %}
+      <input type="submit" class="btn btn-dark" />
+      {% elif all_completed and session.get('user_id') %}
+      <button class="btn btn-success" disabled>Completed</button>
+      {% endif %}
+    </div>
+  </form>
+</div>
+
+{% endblock content %}

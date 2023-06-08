@@ -1,15 +1,13 @@
-from flask import render_template, url_for, flash, redirect, session, jsonify
+from flask import render_template, url_for, flash, redirect, session, request
 from handoffmls import app, db
 from handoffmls.dashboard import dashboard
 from handoffmls.forms import RegistrationForm
 from handoffmls.dashboard.forms import AddUserForm, CreateHandoffForm
-from handoffmls.models.lab import Lab
-from handoffmls.models.user import User
-from handoffmls.models.handoff import Handoff
+from handoffmls.models import Lab, User, Handoff, Task
 from flask_bcrypt import Bcrypt
 import json
 
-from handoffmls.middlewares import authentication_required, is_logged_in
+from handoffmls.middlewares import authentication_required
 
 # init bcrypt
 bcrypt = Bcrypt(app)
@@ -131,7 +129,7 @@ def create_handoff():
         return dynamic_values
 
     form = CreateHandoffForm()
-    # add users to wtf form modelto generate checkbox
+    # add susers to wtf form modelto generate checkbox
     form.persons.choices = get_users_in_lab()
 
     if form.validate_on_submit():
@@ -150,8 +148,37 @@ def create_handoff():
         db.session.add(handoff)
         db.session.commit()
 
-        return redirect(url_for('dashboard.dashboard_home'))
+        # if error with adding task delete handoff
+        if 'count' not in request.form:
+            # remove handoff
+            db.session.delete(handoff)
+            db.session.commit()
 
+        tasks = []
+        task_count = int(request.form['count'])
+        try:
+            for i in range(1, task_count + 1):
+                task_description = request.form.get(f'task-{i}')
+
+                # Convert checkbox value to boolean
+                task_status = bool(request.form.get(f'task-status-{i}'))
+
+                task = Task(description=task_description,
+                            completed=task_status)
+                tasks.append(task)
+
+            # Associate tasks with the handoff
+            handoff.tasks = tasks
+
+            db.session.commit()
+        # Code to execute after successful commit
+        except Exception as e:
+            db.session.rollback()
+            # Code to handle the error
+            print(e)
+
+        # redirect
+        return redirect(url_for("dashboard.dashboard_home"))
     return render_template("dashboard/create_handoff.html", form=form)
 
 
@@ -194,3 +221,37 @@ def update_user():
         db.session.commit()
 
     return redirect(url_for('dashboard.profile'))
+
+
+@dashboard.route("/tasks")
+@dashboard.route("/tasks/<id>")
+def tasks_html(id=None):
+    handoff = Handoff.query.get(id)
+    tasks = handoff.tasks
+    all_completed = all(task.completed for task in tasks)
+    if all_completed and handoff.status == "in progress":
+        handoff.status = "completed"
+        db.session.commit()
+    return render_template("dashboard/tasks.html", tasks=tasks, enumerate=enumerate, all_completed=all_completed)
+
+
+@dashboard.route("/tasks/<id>", methods=["POST"])
+def tasks_post(id):
+    handoff = Handoff.query.get(id)
+    tasks = handoff.tasks
+    try:
+
+        for task in tasks:
+            index = tasks.index(task)
+            if task.completed == False:
+                task.completed = bool(request.form.get(str(index)))
+        all_completed = all(task.completed for task in tasks)
+        if all_completed:
+            handoff.status = "completed"
+        print(handoff.status)
+        db.session.commit()
+    except Exception as e:
+        db.session.rollback()
+        print(e)
+
+    return render_template("dashboard/tasks.html", tasks=tasks, enumerate=enumerate, all_completed=all_completed)

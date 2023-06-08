@@ -29,4 +29,4 @@ class Handoff(db.Model):
     )
 
     def __repr__(self):
-        return f"Post('{self.first_name}', '{self.created_at}')"
+        return f"Post('{self.summary}', '{self.created_at}', '{self.tasks}')"

@@ -66,10 +66,31 @@
           {% endfor %}
         </ul>
       </div>
+      <div id="tasks" class="form-group mb-3">
+        <label for="" class="form-label">Tasks</label>
+        <div class="row">
+          <div class="col-10">
+            <textarea
+              name="task-1"
+              class="form-control mb-3"
+              placeholder="task-1"
+              required
+            ></textarea>
+          </div>
+
+          <div class="col-2">
+            <input type="checkbox" name="task-status-1" id="task-status-1"/>
+          </div>
+        </div>
+      </div>
+      <button type="button" id="addButton" class="btn btn-dark">Add</button>
+      <input type="hidden" id="count" name="count" value="1"/>
     </fieldset>
     <div class="form-group mb-3">
       {{ form.submit(class="btn btn-outline-dark btn-lg") }}
     </div>
   </form>
 </div>
+
+<script src="/static/js/tasks.js"></script>
 {% endblock content %}
