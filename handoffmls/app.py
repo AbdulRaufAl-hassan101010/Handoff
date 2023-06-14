@@ -1,3 +1,9 @@
+from models.handoff import Handoff
+from models.task import Task
+from models.user import User
+from models.lab import Lab
+from dashboard import dashboard
+from landingpage import landingpage
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
@@ -16,16 +22,12 @@ app.config['SECRET_KEY'] = 'ab95dd6cf1628f866d9b4e6f27b7ecce'
 app.config['SQLALCHEMY_DATABASE_URI'] = f"mysql+pymysql://{db_user}:{db_password}@{db_host}/{db_name}"
 db = SQLAlchemy(app)
 
-from landingpage import landingpage
-from dashboard import dashboard
+
+# register landing page and dashboard blueprints
 app.register_blueprint(landingpage, url_prefix="")
 app.register_blueprint(dashboard, url_prefix="/dashboard")
 
-# imported tables to make db.reflect  create tables in order specified 
-from models.lab import Lab
-from models.user import User
-from models.task import Task
-from models.handoff import Handoff
+# imported tables to make db.reflect  create tables in order specified
 
 if __name__ == "__main__":
     with app.app_context():
