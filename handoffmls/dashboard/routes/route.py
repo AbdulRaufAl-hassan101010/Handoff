@@ -38,7 +38,7 @@ def get_handoffs_data():
 
     return {'handoffs_all': handoffs_all, 'handoffs_in_progress': handoffs_in_progress, 'handoffs_completed': handoffs_completed}
 
-
+# @route dashboard home page 
 @dashboard.route("/")
 @authentication_required
 def render_home():
@@ -60,7 +60,7 @@ def dashboard_home(path=None):
 
     return redirect(url_for('dashboard.render_home'))
 
-
+# logout route
 @dashboard.route("/logout")
 @authentication_required
 def logout():
@@ -68,7 +68,7 @@ def logout():
     flash('You have been logged out', 'danger')
     return redirect(url_for('landingpage.login'))
 
-
+#  view users route
 @dashboard.route("/users")
 @authentication_required
 def dashboard_users():
@@ -83,7 +83,7 @@ def dashboard_users():
     users = lab.employees
     return render_template('dashboard/users.html', username=username, page="dashboard", users=users, users_len=len(users))
 
-
+# create users route
 @dashboard.route("/user/add", methods=['GET', 'POST'])
 @authentication_required
 def add_user():
@@ -110,7 +110,7 @@ def add_user():
     users = lab.employees
     return render_template('dashboard/add_user.html', title='Dashboard | Add user', form=form, users_len=len(users))
 
-
+# create handoffs route
 @dashboard.route("/create_handoff", methods=['GET', 'POST'])
 @authentication_required
 def create_handoff():
@@ -182,6 +182,7 @@ def create_handoff():
     return render_template("dashboard/create_handoff.html", form=form)
 
 
+# view your profile route
 @dashboard.route("/profile",  methods=["GET"])
 @authentication_required
 def profile():
@@ -206,7 +207,8 @@ def profile():
     return render_template("dashboard/profile.html", form=form)
 
 
-@dashboard.route("/profile", methods=["POST"])
+# update profile route
+@dashboard.route("/profile", methods=["PUT"])
 @authentication_required
 def update_user():
     user_id = session.get('user_id')
@@ -222,36 +224,42 @@ def update_user():
 
     return redirect(url_for('dashboard.profile'))
 
-
-@dashboard.route("/tasks")
+# task route 
 @dashboard.route("/tasks/<id>")
-def tasks_html(id=None):
+def tasks_html(id):
     handoff = Handoff.query.get(id)
     tasks = handoff.tasks
     all_completed = all(task.completed for task in tasks)
     if all_completed and handoff.status == "in progress":
         handoff.status = "completed"
         db.session.commit()
-    return render_template("dashboard/tasks.html", tasks=tasks, enumerate=enumerate, all_completed=all_completed)
+    return render_template("dashboard/tasks.html", tasks=tasks, enumerate=enumerate, all_completed=all_completed, handoff=handoff, persons=json.loads(handoff.persons))
 
-
+# update task route 
 @dashboard.route("/tasks/<id>", methods=["POST"])
 def tasks_post(id):
     handoff = Handoff.query.get(id)
     tasks = handoff.tasks
+ 
     try:
 
         for task in tasks:
             index = tasks.index(task)
             if task.completed == False:
                 task.completed = bool(request.form.get(str(index)))
+                import datetime
+                handoff.updated_at = datetime.datetime.now()
+                
         all_completed = all(task.completed for task in tasks)
+        
+        # update handoff status to completed when all task are completed
         if all_completed:
             handoff.status = "completed"
-        print(handoff.status)
+           
         db.session.commit()
+        
     except Exception as e:
         db.session.rollback()
         print(e)
 
-    return render_template("dashboard/tasks.html", tasks=tasks, enumerate=enumerate, all_completed=all_completed)
+    return redirect(url_for('dashboard.tasks_html', id=id))

@@ -1,16 +1,29 @@
 {% extends "dashboard/layout.html" %} {% block content %}
 <div class="container mt-5">
+  <div class="mb-5 card p-3">
+    <div><small>Created by: {{handoff.created_by_user.email}}</small></div>
+    <div><small>Created at: {{handoff.created_at}}</small></div>
+    <div><small>Updated at: {{handoff.updated_at}}</small></div>
+  </div>
+  <div class="mb-5">
+    <legend>Summary</legend>
+    <div class="card  p-3 mb-2">{{handoff.summary}}</div>
+  </div>
+  <div class="mb-5">
+    <legend>Crew And Assignee</legend>
+    {% for index, person in enumerate(persons) %}
+    <div class="card p-3 mb-2">{{ index+1 }}. {{ person }}</div>
+    {% endfor %}
+  </div>
   <form action="" method="POST">
     <legend>Tasks</legend>
-    {% for index, task in enumerate(tasks) %}
+    {% for index, task in enumerate(handoff.tasks) %}
 
     <div class="card p-3 mb-2">
       <div class="d-flex justify-content-between">
         <span>{{index+1}}. {{task.description}}</span>
-        <span
-          ><input type="checkbox" name="{{index}}" class="form-check-input" {%
-          if task.completed == True %} disabled checked {% endif %} /></span
-        >
+        <span><input type="checkbox" name="{{index}}" class="form-check-input" {% if task.completed==True %} disabled
+            checked {% endif %} /></span>
       </div>
     </div>
 
