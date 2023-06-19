@@ -1,6 +1,6 @@
 <div class="col-md-6 col-lg-4 p-1">
   <a
-    href="{{url_for('dashboard.tasks_html')}}/{{handoff.id}}"
+    href="{{url_for('dashboard.tasks_html', id=handoff.id)}}"
     class="text-decoration-none"
     ><div class="card p-2">
       <h4 class="text-dark">{{handoff.summary[:20]}}</h4>
